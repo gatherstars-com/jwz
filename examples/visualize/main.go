@@ -44,13 +44,11 @@ func main() {
 	visualize(x)
 }
 
-// Send a neatish ASCII tree representation of the threads, so we can do a human based check of whether
-// things are working. Note that there is no sort of the tree implemented - you have to do that yourself -
-// so even though you might run it against the same data twice, the display will be in a different order because
-// go maps do not repeat order, deliberately.
+// visualize a neat-ish ASCII tree representation of the threads, so we can do a human based check of whether
+// things are working.
 //
-// Also, I have not been able to get colors to work correctly in OSX console with the tview for some reason,
-// but this is an example of jwz, not tview
+// Also, The colors will sometimes look wonky on a custom configuration of OSX console. Try a standard one and
+// make sure your TERM and terminfo database are good if you have issues.
 //
 func visualize(threads jwz.Threadable) {
 
@@ -68,7 +66,7 @@ func visualize(threads jwz.Threadable) {
 }
 
 // sortByDate is a fixed sort by date only just to give the general idea to people. Someone might want to
-// submit a sorting interface to the repo as a contribution. Maybe I will do it in the future.
+// submit a sorting interface to the repo as a contribution. Maybe I will do it soon if I have time.
 //
 func sortByDate(treeNode jwz.Threadable) jwz.Threadable {
 
@@ -127,6 +125,9 @@ func sortByDate(treeNode jwz.Threadable) jwz.Threadable {
 	return newChild
 }
 
+// addNode creates a visual node for the given treeNode and makes it a child of the
+// given target node
+//
 func addNode(target *tview.TreeNode, treeNode jwz.Threadable) {
 
 	if treeNode == nil {
@@ -175,6 +176,8 @@ func addNode(target *tview.TreeNode, treeNode jwz.Threadable) {
 	}
 }
 
+// colorMe decides what color a visualized node should be, based on whether it has children or nexts
+//
 func colorMe(n *tview.TreeNode, treeNode jwz.Threadable) {
 
 	hasNext := treeNode.GetNext() != nil

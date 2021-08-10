@@ -92,14 +92,16 @@ func BuildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 	return emails, nil
 }
 
-// Email implements the Threadable interface - this is what a user of this
-// package needs to provide to thread their messages, though you don't have to use enmime of course.
+// Email implements the Threadable interface - see the interface documentation for the function docs.
+// This is what a user of this package needs to provide to thread their messages, though you don't have to use
+// enmime of course.
+//
 // You can put anything in here as only next and child are required, though you need some sort of
 // reference to the email, or at least a few parts of it, such as the Subject, Message-Id, and References
-// attributes.
+// headers.
 //
 // You could also add a parent and prev field if you need doubly linked lists, which can make sorting
-// easier etc.
+// easier etc. Or use a container or something. This is the simplest example - you should get the idea, big nose.
 //
 type Email struct {
 	email  *enmime.Envelope
