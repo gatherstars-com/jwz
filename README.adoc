@@ -17,6 +17,13 @@ ifndef::env-github[]
 :imagesdir: docs/img/
 endif::[]
 
+[#img-goreport]
+[link=https://goreportcard.com/report/github.com/golang-standards/project-layout]
+image:https://goreportcard.com/badge/github.com/golang-standards/project-layout?style=flat-square[go report]
+[#img-pkgdoc]
+[link=https://pkg.go.dev/github.com/gatherstars-com/jwz]
+image:https://pkg.go.dev/badge/github.com/gatherstars-com/jwz.svg[Go Reference]
+
 image:clonobg.png[Gather Stars Logo, 100, 100] This is an open source Go implementation of the widely known JWZ
 message threading algorithm originally written by Jamie Zawinsky - see https://www.jwz.org/doc/threading.html[his explanation here].
 
