@@ -10,7 +10,7 @@ ifdef::env-github[]
 :important-caption: :heavy_exclamation_mark:
 :caution-caption: :fire:
 :warning-caption: :warning:
-:imagesdir: https://github.com/gatherstars-com/jwz/tree/master/docs/img
+:imagesdir: https://github.com/gatherstars-com/jwz/raw/master/docs/img/
 :showtitle:
 endif::[]
 ifndef::env-github[]
