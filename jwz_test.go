@@ -22,7 +22,7 @@ var emails = make([]Threadable, 0, 3000)
 //
 func TestMain(m *testing.M) {
 
-	_ = filepath.WalkDir("../../test/testdata", func(path string, d fs.DirEntry, err error) error {
+	_ = filepath.WalkDir("test/testdata", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			log.Printf("cannot process file %s because: %#v", path, err)
 			os.Exit(1)

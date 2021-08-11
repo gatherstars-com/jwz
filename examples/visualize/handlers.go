@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/gatherstars-com/jwz/pkg/jwz"
+	"github.com/gatherstars-com/jwz"
 	"github.com/jhillyerd/enmime"
 	"io/fs"
 	"log"
