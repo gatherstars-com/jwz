@@ -79,12 +79,12 @@ type Threadable interface {
 	//
 	SetChild(kid Threadable)
 
-	// GetNext just makes it easier to navigate through the threads after they are built
+	// GetNext just makes it easier to navigate through the threads after they are built,
 	// but you don't have to use this if you have a better way
 	//
 	GetNext() Threadable
 
-	// GetChild just makes it easier to navigate through the threads after they are built
+	// GetChild just makes it easier to navigate through the threads after they are built,
 	// but you don't have to use this if you have a better way
 	//
 	GetChild() Threadable

@@ -23,7 +23,7 @@ import (
 type Threader struct {
 	rootNode     *threadContainer
 	idTable      map[string]*threadContainer
-	bogusIdCount int
+	bogusIDCount int
 }
 
 // NewThreader returns an instance of the Threader struct, that is ready to attack
@@ -175,8 +175,8 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 		// in the hash table to not stomp each other.
 		//
 		if c.threadable != nil {
-			id = fmt.Sprintf("<Bogus-id:%d>", t.bogusIdCount)
-			t.bogusIdCount++
+			id = fmt.Sprintf("<Bogus-id:%d>", t.bogusIDCount)
+			t.bogusIDCount++
 			c = nil
 		} else {
 			c.threadable = threadable

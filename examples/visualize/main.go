@@ -98,7 +98,9 @@ func sortByDate(treeNode jwz.Threadable) jwz.Threadable {
 		s = append(s, current)
 	}
 
-	// We can now sort the slice of next pointers at this level
+	// We can now sort the slice of next pointers at this level. Note that the child of this node
+	// will already have been sorted, so if it is used to get the date (this node is a Dummy), then
+	// it will be OK to use it as it will be in the correct order already
 	//
 	sort.Slice(s, func(i, j int) bool {
 		return GetEmailDate(s[i]).Before(GetEmailDate(s[j]))
@@ -176,7 +178,7 @@ func addNode(target *tview.TreeNode, treeNode jwz.Threadable) {
 	}
 }
 
-// colorMe decides what color a visualized node should be, based on whether it has children or nexts
+// colorMe decides what color a visualized node should be, based on whether it has child and/or next
 //
 func colorMe(n *tview.TreeNode, treeNode jwz.Threadable) {
 

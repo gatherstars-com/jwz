@@ -1,3 +1,5 @@
+// suppress inspection "GrazieInspection" for whole file
+// suppress inspection "GrazieInspection"
 = How to use the jwz module by example
 Jim Idle <jimi@gatherstars.com>
 0.9.0, August 10, 2021: Explaining jwz module by example
@@ -28,14 +30,14 @@ quality, but the examples are obviously not.
 
 == Following the example code
 
-.The code is easy enough, with the main.go file showing how to:
+.The code is easy enough, with the `main.go` file showing how to:
 * Parse raw .eml files in to email envelopes using the excellent https://github.com/jhillyerd/enmime[Enmime go module]
 * Wrap the parsed envelopes in to a set of Threadable interfaces
 * Thread the set using the jwz package
 * Use the https://github.com/rivo/tview[tview] package to create an ASCII display tree of the emails to show humans that
   threading is working. The package tests verify it is working for programs.
 
-.The handlers.go file provides:
+.The `handlers.go` file provides:
 * Sample implementations of the interface(s) you need to implement to use the algorithm/pkg
 * A couple of utility funcs, including sorting the threaded tree by date
   footnote:[If I have time, I will implement sort as an interface - maybe someone else would like to?]
@@ -49,7 +51,16 @@ run it like this:
  $ vizualize -emldir path/to/test/testdata
 ====
 
-You will se a few diagnostics about the quality of the test set (it is deliberately broken in some places for the
+You will see some diagnostics about the quality of the test set (it is deliberately broken in some places for the
 unit tests), you should see a treeview in your terminal that looks like this:
 
 image::screen1.png[Image of threaded tree]
+
+If you don't need that testdata and just want to try the command on your own dataset, then there is no need to clone
+this repo. You can just install the `visualize` command into `${GOPATH}/bin`:
+
+====
+ ~/lufc/ > go install github.com/gatherstars-com/jwz/examples/visualize@latest
+====
+
+Where I am sure it will clash with 42 other commands called visualize.
