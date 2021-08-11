@@ -62,9 +62,8 @@ func TestMain(m *testing.M) {
 				if ee.Severe {
 					log.Printf("enmime parse yields severe error. File '%s', error: %#v", path, ee)
 					return nil
-				} else {
-					log.Printf("enmime shows a non-fatal error. File '%s'm error: %#v", path, ee)
 				}
+				log.Printf("enmime shows a non-fatal error. File '%s'm error: %#v", path, ee)
 			}
 		}
 
@@ -100,9 +99,8 @@ func (e *EmailRoot) Next() bool {
 	e.position = e.position + 1
 	if e.position < len(e.emails) {
 		return true
-	} else {
-		return false
 	}
+	return false
 }
 
 // Get returns the Threadable at the current internal cursor position
