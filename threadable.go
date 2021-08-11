@@ -6,7 +6,7 @@ package jwz
 //
 // JI - Although it might be useful to support incoming tree structures, all the
 // Next and Get are doing is keeping a pointer if the input is a []Threadable. So we also
-// have a function that just accepts that as input as well as a ThreadableRoot
+// have a function that just accepts that as input as well as one that accepts a ThreadableRoot
 //
 type ThreadableRoot interface {
 
@@ -29,19 +29,19 @@ type ThreadableRoot interface {
 //
 type Threadable interface {
 
-	// MessageThreadID returns an interface identifying this message.
+	// MessageThreadID returns a string identifying this message.
 	// Generally this will be a representation of the contents of the
-	// Message-ID header. However, the implementation of the Compare()
-	// func for this interface should obviously know how to deal with your type
+	// Message-ID header.
 	//
 	MessageThreadID() string
 
 	// MessageThreadReferences returns the IDs of the set of messages referenced by this one.
-	// This list should be ordered from oldest-ancestor to youngest-ancestor.
+	// This list should be ordered from oldest-ancestor to youngest-ancestor. However, the returned
+	// tree can be sorted however you like.
 	//
 	MessageThreadReferences() []string
 
-	// Subject returns the subject line of the threadable with no manipulation
+	// Subject returns the subject line of the threadable with no manipulation or Re: Re: etc.
 	//
 	Subject() string
 
@@ -103,9 +103,8 @@ type Threadable interface {
 	MakeDummy(count int) Threadable
 
 	// IsDummy should return true of dummy messages, false otherwise.
-	// It is legal to pass dummy messages in with the list returned by
-	// elements(); the isDummy() method is the mechanism by which they are
-	// noted and ignored.
+	// It is legal to pass dummy messages within your input;
+	// the isDummy() method is the mechanism by which they are noted and ignored.
 	//
 	IsDummy() bool
 }

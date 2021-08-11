@@ -52,4 +52,4 @@ run it like this:
 You will se a few diagnostics about the quality of the test set (it is deliberately broken in some places for the
 unit tests), you should see a treeview in your terminal that looks like this:
 
-image::screen1.jpg[Image of threaded tree]
+image::screen1.png[Image of threaded tree]

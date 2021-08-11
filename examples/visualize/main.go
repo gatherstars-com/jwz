@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/gatherstars-com/jwz/pkg/jwz"
+	"github.com/gatherstars-com/jwz"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"log"
