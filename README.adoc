@@ -1,9 +1,10 @@
 = The JWZ Threading algorithm written in Go
 Jim Idle <jimi@gatherstars.com>
-0.9.0, August 10, 2021: The JWZ Threading algorithm written in Go
+August 10, 2021: The JWZ Threading algorithm written in Go
 :toc:
 :icons: font
 :keywords: jwz email parsing threading enmime
+:description: The JWZ Threading algorithm written in Go
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
@@ -18,8 +19,8 @@ ifndef::env-github[]
 endif::[]
 
 [#img-goreport]
-[link=https://goreportcard.com/report/github.com/golang-standards/project-layout]
-image:https://goreportcard.com/badge/github.com/golang-standards/project-layout?style=flat-square[go report]
+[link=https://goreportcard.com/report/github.com/gatherstars-com/jwz]
+image:https://goreportcard.com/badge/github.com/gatherstars-com/jwz?style=flat-square[Go Report]
 [#img-pkgdoc]
 [link=https://pkg.go.dev/github.com/gatherstars-com/jwz]
 image:https://pkg.go.dev/badge/github.com/gatherstars-com/jwz.svg[Go Reference]
@@ -36,9 +37,9 @@ breaking changes, but they will be trivial to adapt to. That release may also su
 More documentation will follow as we make this fully production ready.
 
 =====
- include jwz "github.com/gatherstars-com/jwz"
+  include "github.com/gatherstars-com/jwz/pkg/jwz"
 =====
 
 =====
- ~/myproject: go mod tidy
+  ~/myproject: go mod tidy
 =====
