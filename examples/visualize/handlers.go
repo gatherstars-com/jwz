@@ -100,15 +100,16 @@ func BuildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 // reference to the email, or at least a few parts of it, such as the Subject, Message-Id, and References
 // headers.
 //
-// You could also add a parent and prev field if you need doubly linked lists, which can make sorting
-// easier etc. Or use a container or something. This is the simplest example - you should get the idea, big nose.
+// You could also add a prev field if you need doubly linked next lists, which can make some things easier
+// etc. Or use a container or something. This is the simplest example - you should get the idea, big nose.
 //
 type Email struct {
 	email  *enmime.Envelope
 	next   jwz.Threadable
+	parent jwz.Threadable
 	child  jwz.Threadable
 	dummy  bool
-	dcount int
+	forID  string
 }
 
 // GetNext the next Threadable in the chain, if any
@@ -123,11 +124,17 @@ func (e *Email) GetChild() jwz.Threadable {
 	return e.child
 }
 
+// GetParent the parent Threadable of this node, if any
+//
+func (e *Email) GetParent() jwz.Threadable {
+	return e.parent
+}
+
 // MessageThreadID the id of this email message
 //
 func (e *Email) MessageThreadID() string {
 	if e.dummy {
-		return fmt.Sprintf("<fake-id-%d>", e.dcount)
+		return e.forID
 	}
 	return e.email.GetHeader("Message-Id")
 }
@@ -152,7 +159,7 @@ var re = regexp.MustCompile("[Rr][Ee][ \t]*:[ \t]*")
 //
 func (e *Email) SimplifiedSubject() string {
 	if e.dummy {
-		return fmt.Sprintf("Subject %d", e.dcount)
+		return e.Subject()
 	}
 	subj := e.email.GetHeader("Subject")
 	subj = re.ReplaceAllString(subj, "")
@@ -169,7 +176,7 @@ func (e *Email) Subject() string {
 			return e.child.Subject() + " :: node synthesized by https://gatherstars.com/"
 		}
 
-		return fmt.Sprintf("Placeholder %d - manufactured by https://gatherstars.com/", e.dcount)
+		return fmt.Sprintf("Placeholder %s - manufactured by https://gatherstars.com/", e.MessageThreadID())
 	}
 
 	// Add in the date for a bit of extra information
@@ -202,16 +209,25 @@ func (e *Email) SetNext(next jwz.Threadable) {
 //
 func (e *Email) SetChild(kid jwz.Threadable) {
 	e.child = kid
+	if kid != nil {
+		kid.SetParent(e)
+	}
+}
+
+// SetParent allows us to add or change the parent Threadable of this node
+//
+func (e *Email) SetParent(parent jwz.Threadable) {
+	e.parent = parent
 }
 
 // MakeDummy manufactures a placeholder Threadable that other Threadables can become children of. See
 // interface documentation for more details - note that this may be subject to change to also supply the
 // MessageID that this dummy is placeholder for, if we have it
 //
-func (e *Email) MakeDummy(count int) jwz.Threadable {
+func (e *Email) MakeDummy(forID string) jwz.Threadable {
 	return &Email{
-		dummy:  true,
-		dcount: count,
+		dummy: true,
+		forID: forID,
 	}
 }
 
@@ -260,4 +276,13 @@ func GetEmailDate(e jwz.Threadable) time.Time {
 		return time.Unix(0, 0)
 	}
 	return d
+}
+
+// byDate is a sort comparison function that is used to call in to the Threadable Sort utility function and
+// sort the threads by Date
+//
+func byDate(t1 jwz.Threadable, t2 jwz.Threadable) bool {
+
+	return GetEmailDate(t1).Before(GetEmailDate(t2))
+
 }

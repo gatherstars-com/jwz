@@ -30,9 +30,15 @@ type threadContainer struct {
 	// child shows which threadable is the child of this container
 	//
 	next *threadContainer
+
+	// forID holds the message id that this container is holding. This is only useful for
+	// when we don't ever see the actual email (it is referenced by one email, but we don't
+	// have the email as we are parsing a partial set)
+	//
+	forID string
 }
 
-// flush copes the ThreadContainer tree structure down into the underlying
+// flush copies the ThreadContainer tree structure down into the underlying
 // Threadable elements. I.E. make the IThreadable tree look like
 // the ThreadContainer tree.
 //

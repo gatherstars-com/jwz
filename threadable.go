@@ -79,6 +79,12 @@ type Threadable interface {
 	//
 	SetChild(kid Threadable)
 
+	// SetParent is not called by the jwz algorithm and if you do not need the pointer in your
+	// implementation, then you can implement it as a null function. It can be useful when using
+	// the Walk utility method though
+	//
+	SetParent(kid Threadable)
+
 	// GetNext just makes it easier to navigate through the threads after they are built,
 	// but you don't have to use this if you have a better way
 	//
@@ -88,6 +94,11 @@ type Threadable interface {
 	// but you don't have to use this if you have a better way
 	//
 	GetChild() Threadable
+
+	// GetParent just makes it easier to navigate through the threads after they are built,
+	// but you don't have to use this if you have no need for it
+	//
+	GetParent() Threadable
 
 	// MakeDummy creates a dummy parent object.
 	//
@@ -100,7 +111,7 @@ type Threadable interface {
 	// will be used on this placeholder, as either the object or the argument,
 	// just as for other elements of the tree.
 	//
-	MakeDummy(count int) Threadable
+	MakeDummy(forID string) Threadable
 
 	// IsDummy should return true of dummy messages, false otherwise.
 	// It is legal to pass dummy messages within your input;
