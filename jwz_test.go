@@ -5,11 +5,13 @@ import (
 	"github.com/jhillyerd/enmime"
 	"io/fs"
 	"log"
+	"net/mail"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 )
 
 // Where we are going to store the emails. We know that the test data is of a fair size, so we tell the slice that
@@ -18,7 +20,7 @@ import (
 var Emails = make([]Threadable, 0, 3000)
 
 // TestMain sets up everything for the other test(s). It essentially parses a largish set of publicly available
-// emails in to a structure that can then be used to perform email threading testing. To perform the parsing, we
+// Emails in to a structure that can then be used to perform email threading testing. To perform the parsing, we
 // use the enmime package at https://github.com/jhillyerd/enmime
 //
 func TestMain(m *testing.M) {
@@ -153,6 +155,33 @@ func (e *Email) GetParent() Threadable {
 	return e.parent
 }
 
+// GetDate extracts the timestamp from the enmime envelope contained in the supplied Threadable
+//
+func (e *Email) GetDate() time.Time {
+
+	// We can have dummies because we are likely to have parsed a set of emails with incomplete threads,
+	// where the start of the thread or sub thread was referenced, but we did not get to parse it, at least yet.
+	// This means it will be a placeholder as the root for the thread, so we can use the time of the child as the
+	// time of this email.
+	//
+	if e.IsDummy() {
+		if e.GetChild() != nil {
+			return e.GetChild().GetDate()
+		}
+
+		// Protect against having nothing in the children that knows what time it is. So, back to the
+		// beginning of time according to Unix
+		//
+		return time.Unix(0, 0)
+	}
+	emailDateStr := e.email.GetHeader("Date")
+	d, err := mail.ParseDate(emailDateStr)
+	if err != nil {
+		return time.Unix(0, 0)
+	}
+	return d
+}
+
 func (e *Email) MessageThreadID() string {
 	if e.dummy {
 		return e.forID
@@ -188,7 +217,7 @@ func (e *Email) Subject() string {
 	// Add in the date for a bit of extra information
 	//
 	var sb strings.Builder
-	t := GetEmailDate(e)
+	t := e.GetDate()
 	sb.WriteString(t.UTC().String())
 	sb.WriteString(" : ")
 	sb.WriteString(strings.Trim(e.email.GetHeader("Subject"), " "))
@@ -239,7 +268,7 @@ func NewEmail(envelope *enmime.Envelope) Threadable {
 
 func ExampleThreader_ThreadSlice() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -265,7 +294,7 @@ func ExampleThreader_ThreadSlice() {
 
 func TestThreader_ThreadSlice(t1 *testing.T) {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -287,7 +316,7 @@ func TestThreader_ThreadSlice(t1 *testing.T) {
 
 func ExampleThreader_ThreadRoot() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -315,7 +344,7 @@ func ExampleThreader_ThreadRoot() {
 
 func TestThreader_ThreadRoot(t1 *testing.T) {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the ThreadableRootInterface to traverse the emails

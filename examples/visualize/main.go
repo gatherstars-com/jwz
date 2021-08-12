@@ -19,7 +19,7 @@ func main() {
 
 	// Use the enmime package to build all the emails we find under the given directory
 	//
-	threadables, err := BuildEnvelopes(testData, sizeHint)
+	threadables, err := buildEnvelopes(testData, sizeHint)
 	if err != nil {
 		log.Printf("Unable to walk the eml directory: %#v", err)
 		os.Exit(1)
