@@ -1,19 +1,31 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/gatherstars-com/jwz?style=flat-square)](https://goreportcard.com/report/github.com/github.com/gatherstars-com/jwz)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gatherstars-com/jwz?style=flat-square)](https://goreportcard.com/report/github.com/gatherstars-com/jwz)
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/github.com/gatherstars-com)](https://pkg.go.dev/github.com/github.com/gatherstars-com)
 [![Release](https://img.shields.io/github/release/gatherstars-com/jwz.svg?style=flat-square)](https://github.com/gatherstars-com/jwz/releases/latest)
 # The JWZ Threading algorithm written in Go
 
-<img src="https://github.com/gatherstars-com/jwz/raw/master/docs/img/clonobg.png" alt="Gather Stars Logo" width="150" height="150" style="vertical-align: text-top; float: right; margin-left: 10px; margin-top: 0px"> 
+<img src="https://github.com/gatherstars-com/jwz/raw/master/docs/img/clonobg.png" alt="Gather Stars Logo" width="150" height="150" style="vertical-align: text-top; float: right; margin-left: 10px; margin-top: 0"> 
 This is an open source Go implementation of the widely known JWZ message threading algorithm originally written by 
 Jamie Zawinsky - see https://www.jwz.org/doc/threading.html[his explanation here]. 
 
-You will find an example of implementing the interface(s) needed to operate this package under the examples directory.
+You will find an example of implementing the interface(s) needed to operate this package in the `/examples/visualize` 
+directory.
 
-This module is intended to be production quality, but is currently a 0.9.x release because only the author has used it
-to date. Do not hesitate to raise issues or enhancement requests or send pull requests. The 1.0.0 release may contain
-breaking changes, but they will be trivial to adapt to. That release may also supply a few useful utility funcs.
+See the godoc for examples in documentation form, and the example in `examples\visualize`
 
-More documentation will follow as we make this fully production ready.
+## Functionality
+
+The package provides the original JWZ algorithm to implementors of the `Threadable` interface. It has been tested against
+many thousands of emails. The interface provides a few extra features over the original Java version, but these are
+additions and enhancements to the interface, not algorithmic changes.
+
+As well as providing the threading capability itself, the package also provides:
+
+  - A generic walker, to which you can provide a function to operate upon the nodes in the threaded tree. 
+  - A generic sorter, to which you can provide your own comparison function (a byDate example is provided)
+
+Feel free to report any issues and offer any additions by pull requests.
+
+## Quick start
 
 ```go
   include "github.com/gatherstars-com/jwz"
@@ -22,3 +34,29 @@ More documentation will follow as we make this fully production ready.
 ```shell
   ~/myproject: go mod tidy
 ```
+
+```go
+	// Use the enmime package to build all the emails we find under the given directory and store them in a slice
+	// of structs which implement the Threadable interface
+	//
+	//
+	threadables, err := buildEnvelopes(testData, sizeHint)
+	if err != nil {
+		log.Printf("Unable to walk the eml directory: %#v", err)
+		os.Exit(1)
+	}
+
+	// Now we have a big slice of all the emails, lets use our jwz algorithm to place them in to a thread tree
+	//
+	threader := jwz.NewThreader()
+	sliceRoot, err := threader.ThreadSlice(threadables)
+	if err != nil {
+		log.Fatalf("Email threading operation return fatal error: %#v", err)
+	}
+
+	// Sort it Rodney!
+	//
+	x := jwz.Sort(sliceRoot, byDate)
+```
+
+An implementation of buildEnvelopes can be found in `examples\visualizer\handlers.go`
