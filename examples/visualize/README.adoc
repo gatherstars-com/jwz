@@ -57,7 +57,7 @@ run it like this:
 You will see some diagnostics about the quality of the test set (it is deliberately broken in some places for the
 unit tests), you should see a treeview in your terminal that looks like this:
 
-image::screen1.png[Image of threaded tree]
+image::screen2.png[Image of threaded tree]
 
 If you don't need that testdata and just want to try the command on your own dataset, then there is no need to clone
 this repo. You can just install the `visualize` command into `${GOPATH}/bin`:
