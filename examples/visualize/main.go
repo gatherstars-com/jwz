@@ -2,11 +2,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/gatherstars-com/jwz"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"log"
 	"os"
+	"sort"
+	"strings"
 )
 
 func main() {
@@ -59,10 +62,74 @@ func visualize(threads jwz.Threadable) {
 	tree := tview.NewTreeView().
 		SetRoot(root).
 		SetCurrentNode(root)
-	if err := tview.NewApplication().SetRoot(tree, true).EnableMouse(true).Run(); err != nil {
+
+	sideBar := tview.NewTextView().
+		SetTextAlign(tview.AlignLeft).
+		SetText("Email Text")
+
+	headers := tview.NewTextView().
+		SetTextAlign(tview.AlignLeft).
+		SetText("Email Headers").
+		SetToggleHighlights(false)
+
+	// There is only selected (mouse click or <enter>, not a
+	tree.SetSelectedFunc(func(node *tview.TreeNode) {
+		reference := node.GetReference()
+		if reference == nil {
+			sideBar.SetText("No email in this node")
+		} else {
+			thr := reference.(*Email)
+			if thr.dummy {
+				sideBar.SetText("Placeholders manufactured by the Threader don't contain email text")
+			} else {
+				sideBar.SetText(thr.email.Text)
+				sideBar.ScrollToBeginning()
+				headers.Clear()
+
+				// Print each header in sorted order
+				//
+				hk := thr.email.GetHeaderKeys()
+				sort.Strings(hk)
+				for _, k := range hk {
+
+					v := thr.email.GetHeader(k)
+					if !strings.HasPrefix(k, "From ") {
+						_, _ = headers.Write([]byte(fmt.Sprintf("%-30s: %s\n", k, v)))
+						headers.ScrollToBeginning()
+					}
+				}
+			}
+		}
+	})
+
+	grid := tview.NewGrid().
+		SetRows(-3, 0).
+		SetColumns(-0, -2).
+		SetBorders(true).
+		AddItem(headers, 1, 0, 1, 2, 0, 0, false)
+
+	grid.AddItem(tree, 0, 0, 1, 1, 5, 50, true).
+		AddItem(sideBar, 0, 1, 1, 1, 0, 50, false)
+
+	flex := tview.NewFlex().SetDirection(tview.FlexRow)
+
+	flex.AddItem(tree, 0, 2, true)
+
+	text := tview.NewBox().SetBorder(false)
+	flex.AddItem(text, 0, 3, false)
+
+	info := tview.NewBox().SetBorder(true)
+	flex.AddItem(info, 7, 1, false)
+
+	app := tview.NewApplication().SetRoot(grid, true).EnableMouse(true)
+
+	if err := app.Run(); err != nil {
 		panic(err)
 	}
 }
+
+// This function is called when an email node is selected in the tree
+//
 
 // buildVisual creates a visual node for the given treeNode and makes it a child of the
 // given target node.
@@ -77,7 +144,7 @@ func buildVisual(target *tview.TreeNode, treeNode jwz.Threadable) {
 
 	// We need a new visual node for this part of the tree
 	//
-	n := tview.NewTreeNode(treeNode.Subject()).
+	n := tview.NewTreeNode(tview.Escape(treeNode.Subject())).
 		SetReference(treeNode)
 
 	// And select a colour
@@ -99,7 +166,8 @@ func buildVisual(target *tview.TreeNode, treeNode jwz.Threadable) {
 
 		// So we create a visual node for this next email
 		//
-		nn := tview.NewTreeNode(next.Subject())
+		nn := tview.NewTreeNode(next.Subject()).
+			SetReference(next)
 
 		// Select a color
 		//
