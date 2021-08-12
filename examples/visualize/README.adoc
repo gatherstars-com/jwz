@@ -23,10 +23,10 @@ image:clonobg.png[Gather Stars Logo, 100, 100] This visualize tool is a working 
 Gather Stars, Inc. version of the widely known JWZ message threading algorithm originally written by
 Jamie Zawinsky - see https://www.jwz.org/doc/threading.html[his explanation here].
 
-This example is fairly bare bones for clarity- for instance I did not implement doubly linked lists or use containers,
-but the example uses the go interfaces of the actual package, which means that you can implement the interface to your
-email inputs however you like. In other words in a production class use. The package is advertised as production
-quality, but the examples are obviously not.
+This example demonstrates the use of go interfaces of the package. Obviously, so long as your own structure can
+implement the `Threadable` interface, then you can implement the email inputs however you like.
+
+The package is advertised as production quality, but the examples are obviously not.
 
 == Following the example code
 
@@ -34,17 +34,20 @@ quality, but the examples are obviously not.
 * Parse raw .eml files in to email envelopes using the excellent https://github.com/jhillyerd/enmime[Enmime go module]
 * Wrap the parsed envelopes in to a set of Threadable interfaces
 * Thread the set using the jwz package
+* Use the supplied Sort utility func to sort the threadable tree
 * Use the https://github.com/rivo/tview[tview] package to create an ASCII display tree of the emails to show humans that
   threading is working. The package tests verify it is working for programs.
 
 .The `handlers.go` file provides:
-* Sample implementations of the interface(s) you need to implement to use the algorithm/pkg
-* A couple of utility funcs, including sorting the threaded tree by date
-  footnote:[If I have time, I will implement sort as an interface - maybe someone else would like to?]
+* Sample implementation of the interface, called Email, which you can crib from (also, see the jwz_test.go file for an
+  example of how to thread an arbitrary data model instead of a simple slice)
+* Some utility funcs
+** buildEnvelopes parses all the .eml files it finds into a slice of Email structs
+** byDate is an example sorting function, which obviously sorts by the email date
 
 == Trying it out
 
-The repo provides a publicly available email set under test/testdata. Install the visualize command and then
+The repo provides a publicly available email set under test/testdata. Clone this repo and then
 run it like this:
 
 ====

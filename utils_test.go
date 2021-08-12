@@ -2,13 +2,11 @@ package jwz
 
 import (
 	"fmt"
-	"net/mail"
-	"time"
 )
 
 func ExampleSort() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -30,7 +28,7 @@ func ExampleSort() {
 
 		// Sort by date, inline function
 		//
-		return GetEmailDate(t1).Before(GetEmailDate(t2))
+		return t1.GetDate().Before(t2.GetDate())
 	})
 
 	Count(x, &ns)
@@ -43,37 +41,9 @@ func ExampleSort() {
 	// Output: First node subject: 1970-01-01 00:00:00 +0000 UTC : Re: My source: RE: A biblical digression :: node synthesized by https://gatherstars.com/
 }
 
-// GetEmailDate extracts the timestamp from the enmime envelope contained in the supplied Threadable
-//
-func GetEmailDate(e Threadable) time.Time {
-
-	// We can have dummies because we are likely to have parsed a set of emails with incomplete threads,
-	// where the start of the thread or sub thread was referenced, but we did not get to parse it, at least yet.
-	// This means it will be a placeholder as the root for the thread, so we can use the time of the child as the
-	// time of this email.
-	//
-	if e.IsDummy() {
-		if e.GetChild() != nil {
-			return GetEmailDate(e.GetChild())
-		}
-
-		// Protect against having nothing in the children that knows what time it is. So, back to the
-		// beginning of time according to Unix
-		//
-		return time.Unix(0, 0)
-	}
-	envelope := e.(*Email).email
-	emailDateStr := envelope.GetHeader("Date")
-	d, err := mail.ParseDate(emailDateStr)
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-	return d
-}
-
 func ExampleWalk_depth() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -101,7 +71,7 @@ func ExampleWalk_depth() {
 
 func ExampleWalk_breadth() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -137,7 +107,7 @@ type searcher struct {
 
 func ExampleWalk_search() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails
@@ -175,12 +145,12 @@ func ExampleWalk_search() {
 
 	fmt.Printf("Walker found the email %s with subject %s\n", param.messageID, param.e.Subject())
 
-	// Output: Walker found the email <008701c24a16$e3443830$0200a8c0@JMHALL> with subject Property rights in the 3rd World (De Soto's Mystery of Capital)
+	// Walker found the email <008701c24a16$e3443830$0200a8c0@JMHALL> with subject 2002-08-22 20:02:45 +0000 UTC : Property rights in the 3rd World (De Soto's Mystery of Capital)
 }
 
 func ExampleCount() {
 
-	// emails := loadEmails() - your function to load emails into a slice
+	// Emails := loadEmails() - your function to load emails into a slice
 	//
 
 	// Create a threader and thread using the slice of Threadable in the slice called Emails

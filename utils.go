@@ -141,9 +141,8 @@ func Sort(threads Threadable, by ThreadLess) Threadable {
 // will probably not do everything that everyone wants - such as cause Leeds United to beat Manchester United - it
 // is likely to work for most cases.
 //
-// Walk will call your WalkFunction for each node in the tree and will supply the node, some status about
-// where we are in the walk, and an interface value (which can be nil) that you can supply for your own tracking
-// if simple status is not enough for you.
+// Walk will call your WalkFunction for each node in the tree and will supply the node, and an interface value
+// (which can be nil) that you can supply for your own tracking if simple walk is not enough for you.
 //
 // The walker will perform depth first search if asked, by passing parameter isDepth=true
 //

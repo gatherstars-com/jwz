@@ -14,10 +14,10 @@ import (
 	"time"
 )
 
-// BuildEnvelopes finds all email files beneath the given emlDir (files starting with .eml), parses them
+// buildEnvelopes finds all email files beneath the given emlDir (files starting with .eml), parses them
 // and returns a slice full of all the envelopes that we parsed in to existence
 //
-func BuildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
+func buildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 
 	duprem := make(map[string]string)
 	// Where we are going to store the emails. We know that the test data is of a fair size, so we tell the slice that
@@ -130,6 +130,33 @@ func (e *Email) GetParent() jwz.Threadable {
 	return e.parent
 }
 
+// GetDate extracts the timestamp from the enmime envelope contained in the supplied Threadable
+//
+func (e *Email) GetDate() time.Time {
+
+	// We can have dummies because we are likely to have parsed a set of emails with incomplete threads,
+	// where the start of the thread or sub thread was referenced, but we did not get to parse it, at least yet.
+	// This means it will be a placeholder as the root for the thread, so we can use the time of the child as the
+	// time of this email.
+	//
+	if e.IsDummy() {
+		if e.GetChild() != nil {
+			return e.GetChild().GetDate()
+		}
+
+		// Protect against having nothing in the children that knows what time it is. So, back to the
+		// beginning of time according to Unix
+		//
+		return time.Unix(0, 0)
+	}
+	emailDateStr := e.email.GetHeader("Date")
+	d, err := mail.ParseDate(emailDateStr)
+	if err != nil {
+		return time.Unix(0, 0)
+	}
+	return d
+}
+
 // MessageThreadID the id of this email message
 //
 func (e *Email) MessageThreadID() string {
@@ -182,7 +209,7 @@ func (e *Email) Subject() string {
 	// Add in the date for a bit of extra information
 	//
 	var sb strings.Builder
-	t := GetEmailDate(e)
+	t := e.GetDate()
 	sb.WriteString(t.UTC().String())
 	sb.WriteString(" : ")
 	sb.WriteString(strings.Trim(e.email.GetHeader("Subject"), " "))
@@ -250,39 +277,10 @@ func NewEmail(envelope *enmime.Envelope) jwz.Threadable {
 	return e
 }
 
-// GetEmailDate extracts the timestamp from the enmime envelope contained in the supplied Threadable
-//
-func GetEmailDate(e jwz.Threadable) time.Time {
-
-	// We can have dummies because we are likely to have parsed a set of emails with incomplete threads,
-	// where the start of the thread or sub thread was referenced, but we did not get to parse it, at least yet.
-	// This means it will be a placeholder as the root for the thread, so we can use the time of the child as the
-	// time of this email.
-	//
-	if e.IsDummy() {
-		if e.GetChild() != nil {
-			return GetEmailDate(e.GetChild())
-		}
-
-		// Protect against having nothing in the children that knows what time it is. So, back to the
-		// beginning of time according to Unix
-		//
-		return time.Unix(0, 0)
-	}
-	envelope := e.(*Email).email
-	emailDateStr := envelope.GetHeader("Date")
-	d, err := mail.ParseDate(emailDateStr)
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-	return d
-}
-
 // byDate is a sort comparison function that is used to call in to the Threadable Sort utility function and
 // sort the threads by Date
 //
 func byDate(t1 jwz.Threadable, t2 jwz.Threadable) bool {
 
-	return GetEmailDate(t1).Before(GetEmailDate(t2))
-
+	return t1.GetDate().Before(t2.GetDate())
 }

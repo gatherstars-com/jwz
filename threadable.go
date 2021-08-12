@@ -1,5 +1,7 @@
 package jwz
 
+import "time"
+
 // ThreadableRoot is an interface that supports traversing a set of Threadables in some arbitrary
 // way - for instance if they are in some kind of tree structure, the traversal can be
 // hidden behind the interface
@@ -99,6 +101,12 @@ type Threadable interface {
 	// but you don't have to use this if you have no need for it
 	//
 	GetParent() Threadable
+
+	// GetDate is not used by the threading algorithm, but implementing this function may make
+	// your own tree walking routines and sorting methods easier to implement.
+	// It should return the Date associated with the Threadable
+	//
+	GetDate() time.Time
 
 	// MakeDummy creates a dummy parent object.
 	//
