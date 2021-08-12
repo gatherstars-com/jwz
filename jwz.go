@@ -38,7 +38,7 @@ func NewThreader() *Threader {
 	return t
 }
 
-// ThreadSlice will thread the set of messages indicated by threadableRoot.
+// ThreadSlice will thread the set of messages contained within threadableSlice.
 // The Threadable returned is the new first element of the root set.
 //
 func (t *Threader) ThreadSlice(threadableSlice []Threadable) (Threadable, error) {
@@ -61,7 +61,7 @@ func (t *Threader) ThreadSlice(threadableSlice []Threadable) (Threadable, error)
 }
 
 // ThreadRoot will thread the set of messages provided by ThreadableRoot.
-// The Threadable returned is the root set.
+// The Threadable returned is the new first element of the root set.
 //
 func (t *Threader) ThreadRoot(threadableRoot ThreadableRoot) (Threadable, error) {
 
@@ -117,7 +117,6 @@ func (t *Threader) threadRoot() (Threadable, error) {
 		return nil, fmt.Errorf("root node contains a next and should not: %#v", t.rootNode)
 	}
 
-	dc := 1
 	for r := t.rootNode.child; r != nil; r = r.next {
 
 		// If this direct child of the root node has no threadable in it,
@@ -126,8 +125,7 @@ func (t *Threader) threadRoot() (Threadable, error) {
 		// the root set.
 		//
 		if r.threadable == nil {
-			r.threadable = r.child.threadable.MakeDummy(dc)
-			dc++
+			r.threadable = r.child.threadable.MakeDummy(r.forID)
 		}
 	}
 
@@ -161,6 +159,7 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 	// See if we already have a container for this threadable
 	//
 	id := threadable.MessageThreadID()
+	tid := id
 
 	c, present := t.idTable[id]
 	if present {
@@ -189,6 +188,7 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 	if c == nil {
 		c = &threadContainer{}
 		c.threadable = threadable
+		c.forID = tid
 		t.idTable[id] = c
 	}
 
@@ -208,7 +208,8 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 		ref, present = t.idTable[refString]
 		if !present {
 
-			ref = &threadContainer{}
+			ref = &threadContainer{forID: refString}
+
 			t.idTable[refString] = ref
 		}
 
