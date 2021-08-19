@@ -24,6 +24,7 @@ func buildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 	// in advance
 	//
 	var emails = make([]jwz.Threadable, 0, sizeHint)
+	var ignored int
 
 	_ = filepath.WalkDir(emlDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -80,7 +81,8 @@ func buildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 		thisID := envelope.GetHeader("Message-Id")
 		ent, present := duprem[thisID]
 		if present {
-			log.Printf("Duplicate message id in file '%s' ignored in favor of file '%s'", path, ent)
+			log.Printf("Duplicate message id(%s) in file '%s' ignored in favor of file '%s'", thisID, path, ent)
+			ignored++
 		} else {
 			duprem[thisID] = path
 			email := NewEmail(envelope)
@@ -89,6 +91,7 @@ func buildEnvelopes(emlDir string, sizeHint int) ([]jwz.Threadable, error) {
 		return nil
 	})
 
+	log.Printf("Parsed %d email, with %d ignored for a total of %d", len(emails), ignored, len(emails)+ignored)
 	return emails, nil
 }
 
@@ -157,23 +160,42 @@ func (e *Email) GetDate() time.Time {
 	return d
 }
 
+var idre = regexp.MustCompile("<.*?>")
+
 // MessageThreadID the id of this email message
 //
 func (e *Email) MessageThreadID() string {
 	if e.dummy {
 		return e.forID
 	}
-	return e.email.GetHeader("Message-Id")
+	ref := e.email.GetHeader("Message-Id")
+	refs := idre.FindAllString(ref, -1)
+	if len(refs) > 0 {
+		return refs[0]
+	}
+	return "<bogus-id-in-email>"
 }
 
-// MessageThreadReferences the list of references mentioned in dispatches
-//
 func (e *Email) MessageThreadReferences() []string {
 	if e.dummy {
 		return nil
 	}
 
-	refs := e.email.GetHeaderValues("References")
+	// This should be a nicely formatted field that has unique IDs enclosed within <>, and each of those should be
+	// space separated. However, it isn't as simple as this because all sorts of garbage mail clients have been programmed
+	// over the years by people who did not understand what the References field was (I'm looking at you
+	// Comcast, for instance). We can get things like:
+	//
+	//    References: Your message of Friday... <actual-ID>      (Some garbage the programmer thought might be useful)
+	//    References: me@mydomain.com                            (This isn't even a reference)
+	//    References: <ref-1><ref-2><ref-3>                      (Either a pure bug, or they misread the spec)
+	//
+	// The RFC has now been cleaned up to exactly specify this field, but we have to assume there are still
+	// 20 year old email clients out there and cater for them. Especially when we are testing with ancient
+	// public email bodies.
+	//
+	ref := e.email.GetHeader("References")
+	refs := idre.FindAllString(ref, -1)
 	return refs
 }
 
@@ -186,7 +208,7 @@ var re = regexp.MustCompile("[Rr][Ee][ \t]*:[ \t]*")
 //
 func (e *Email) SimplifiedSubject() string {
 	if e.dummy {
-		return e.Subject()
+		return ""
 	}
 	subj := e.email.GetHeader("Subject")
 	subj = re.ReplaceAllString(subj, "")

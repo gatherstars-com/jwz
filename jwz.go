@@ -15,6 +15,7 @@
 package jwz
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -36,6 +37,29 @@ func NewThreader() *Threader {
 		idTable: make(map[string]*threadContainer),
 	}
 	return t
+}
+
+// Thread will create a threadable organized  so that the root node
+// is the original reference, creating dummy placeholders for the emails
+// we don't have yet
+//
+func (t *Threader) Thread(threadable Threadable) (Threadable, error) {
+
+	if threadable == nil {
+		return nil, nil
+	}
+
+	// Build a thread container from this single email
+	//
+	if !threadable.IsDummy() {
+		if err := t.buildContainer(threadable); err != nil {
+			return nil, err
+		}
+	} else {
+		return nil, errors.New("cannot thread a single email with a dummy root")
+	}
+
+	return t.threadRoot()
 }
 
 // ThreadSlice will thread the set of messages contained within threadableSlice.
@@ -186,7 +210,7 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 	// the map
 	//
 	if c == nil {
-		c = &threadContainer{}
+		c = &threadContainer{forID: tid}
 		c.threadable = threadable
 		c.forID = tid
 		t.idTable[id] = c
@@ -316,7 +340,11 @@ func (t *Threader) pruneEmptyContainers(parent *threadContainer) {
 
 	var prev *threadContainer
 	var container = parent.child
-	var next = container.next
+	var next *threadContainer
+
+	if container != nil {
+		next = container.next
+	}
 
 	for container != nil {
 
