@@ -43,7 +43,7 @@ type Threadable interface {
 	//
 	MessageThreadReferences() []string
 
-	// Subject returns the subject line of the threadable with no manipulation or Re: Re: etc.
+	// Subject returns the subject line of the threadable with no manipulation of Re: Re: etc.
 	//
 	Subject() string
 
@@ -58,7 +58,7 @@ type Threadable interface {
 	// This is a String of Unicode characters, and should have had any encodings -
 	// such as RFC 2047 charset encodings - removed first.
 	//
-	// If you aren't interested in threading by subject at all, return nil.
+	// If you aren't interested in threading by subject at all, return "".
 	//
 	SimplifiedSubject() string
 
@@ -85,7 +85,7 @@ type Threadable interface {
 	// implementation, then you can implement it as a null function. It can be useful when using
 	// the Walk utility method though
 	//
-	SetParent(kid Threadable)
+	SetParent(parent Threadable)
 
 	// GetNext just makes it easier to navigate through the threads after they are built,
 	// but you don't have to use this if you have a better way

@@ -52,6 +52,8 @@ func (tc *threadContainer) flush() error {
 		return NoThreadableError{}
 	}
 
+	tc.parent = nil
+
 	if tc.threadable != nil {
 		if tc.child == nil {
 			tc.threadable.SetChild(nil)

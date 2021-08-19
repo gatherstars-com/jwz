@@ -182,15 +182,40 @@ func (e *Email) GetDate() time.Time {
 	return d
 }
 
+var idre = regexp.MustCompile("<.*?>")
+
 func (e *Email) MessageThreadID() string {
 	if e.dummy {
 		return e.forID
 	}
-	return e.email.GetHeader("Message-Id")
+	ref := e.email.GetHeader("Message-Id")
+	refs := idre.FindAllString(ref, -1)
+	if len(refs) > 0 {
+		return refs[0]
+	}
+	return "<bogus-id-in-email>"
 }
 
 func (e *Email) MessageThreadReferences() []string {
-	refs := e.email.GetHeaderValues("References")
+	if e.dummy {
+		return nil
+	}
+
+	// This should be a nicely formatted field that has unique IDs enclosed within <>, and each of those should be
+	// space separated. However, it isn't as simple as this because all sorts of garbage mail clients have been programmed
+	// over the years by people who did not understand what the References field was (I'm looking at you
+	// Comcast, for instance). We can get things like:
+	//
+	//    References: Your message of Friday... <actual-ID>      (Some garbage the programmer thought might be useful)
+	//    References: me@mydomain.com                            (This isn't even a reference)
+	//    References: <ref-1><ref-2><ref-3>                      (Either a pure bug, or they misread the spec)
+	//
+	// The RFC has now been cleaned up to exactly specify this field, but we have to assume there are still
+	// 20 year old email clients out there and cater for them. Especially when we are testing with ancient
+	// public email bodies.
+	//
+	ref := e.email.GetHeader("References")
+	refs := idre.FindAllString(ref, -1)
 	return refs
 }
 
@@ -198,7 +223,7 @@ var re = regexp.MustCompile("[Rr][Ee][ \t]*:[ \t]*")
 
 func (e *Email) SimplifiedSubject() string {
 	if e.dummy {
-		return e.Subject()
+		return ""
 	}
 	subj := e.email.GetHeader("Subject")
 	subj = re.ReplaceAllString(subj, "")
@@ -284,12 +309,12 @@ func ExampleThreader_ThreadSlice() {
 	//
 	var nc int
 	Count(sliceRoot, &nc)
-	if nc != len(Emails) {
-		fmt.Printf("sent %d emails for threading, but got %d back", len(Emails), nc)
+	if nc != 2379 {
+		fmt.Printf("expected %d emails after threading, but got %d back", 2379, nc)
 	} else {
 		fmt.Printf("There are %d test emails", nc)
 	}
-	// Output: There are 2551 test emails
+	// Output: There are 2379 test emails
 }
 
 func TestThreader_ThreadSlice(t1 *testing.T) {
@@ -309,8 +334,8 @@ func TestThreader_ThreadSlice(t1 *testing.T) {
 	//
 	var nc int
 	Count(sliceRoot, &nc)
-	if nc != len(Emails) {
-		t1.Errorf("sent %d emails for threading, but got %d back", len(Emails), nc)
+	if nc != 2379 {
+		t1.Errorf("expected %d emails after threading, but got %d back", 2379, nc)
 	}
 }
 
@@ -334,12 +359,12 @@ func ExampleThreader_ThreadRoot() {
 	//
 	var nc int
 	Count(treeRoot, &nc)
-	if nc != len(Emails) {
-		fmt.Printf("sent %d emails for threading, but got %d back", len(Emails), nc)
+	if nc != 2379 {
+		fmt.Printf("expected %d emails afer threading, but got %d back", 2379, nc)
 	} else {
 		fmt.Printf("There are %d test emails", nc)
 	}
-	// Output: There are 2551 test emails
+	// Output: There are 2379 test emails
 }
 
 func TestThreader_ThreadRoot(t1 *testing.T) {
@@ -362,7 +387,7 @@ func TestThreader_ThreadRoot(t1 *testing.T) {
 	//
 	var nc int
 	Count(treeRoot, &nc)
-	if nc != len(Emails) {
-		t1.Errorf("Sent %d emails for threading, but got %d back", len(Emails), nc)
+	if nc != 2379 {
+		t1.Errorf("expected %d emails after threading, but got %d back", 2379, nc)
 	}
 }
