@@ -59,7 +59,48 @@ func (t *Threader) Thread(threadable Threadable) (Threadable, error) {
 		return nil, errors.New("cannot thread a single email with a dummy root")
 	}
 
-	return t.threadRoot()
+	var err error
+
+	// Organize the root set from what we have
+	//
+	t.rootNode, err = t.findRootSet()
+	if err != nil {
+		return nil, err
+	}
+
+	// We no longer need the map - probably no real need to blank it here, but the original Java code did that,
+	// and it won't harm to let the GC reclaim this in case our caller keeps the *Threader around for some reason
+	//
+	t.idTable = nil
+
+	// We do this to avoid flipping the input order each time through.
+	//
+	t.rootNode.reverseChildren()
+
+	// There should not be a next in the root of a conversation thread
+	//
+	if t.rootNode.next != nil {
+		return nil, fmt.Errorf("root node contains a next and should not: %#v", t.rootNode)
+	}
+
+	// Because the result of this function is a tree that does actually contain dummies for missing references
+	// we need to add a dummy threadable for any node that does not yet have one. Then we can flush the chain
+	// of containers in to the threadable
+	//
+	t.rootNode.fillDummy(threadable)
+
+	var result Threadable
+	if t.rootNode.child != nil {
+		result = t.rootNode.child.threadable
+	}
+
+	// Flush the tree structure of each element of the root set down into
+	// their underlying Threadables
+	//
+	_ = t.rootNode.flush()
+	t.rootNode = nil
+
+	return result, nil
 }
 
 // ThreadSlice will thread the set of messages contained within threadableSlice.
