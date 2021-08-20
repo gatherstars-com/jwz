@@ -130,3 +130,25 @@ func (tc *threadContainer) reverseChildren() {
 		}
 	}
 }
+
+func (tc *threadContainer) fillDummy(t Threadable) {
+
+	// Only a root node can have no threadable element - if we have a message id, then
+	// we are not a root node.
+	//
+	if tc.threadable == nil && tc.forID != "" {
+		tc.threadable = t.MakeDummy(tc.forID)
+	}
+
+	// Depth first, but it does not matter
+	//
+	if tc.child != nil {
+		tc.child.fillDummy(t)
+	}
+
+	// Simple walk this one, no need to save stack space by following the next chain here
+	//
+	if tc.next != nil {
+		tc.next.fillDummy(t)
+	}
+}

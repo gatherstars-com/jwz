@@ -206,16 +206,74 @@ func (e *Email) MessageThreadReferences() []string {
 	// over the years by people who did not understand what the References field was (I'm looking at you
 	// Comcast, for instance). We can get things like:
 	//
-	//    References: Your message of Friday... <actual-ID>      (Some garbage the programmer thought might be useful)
-	//    References: me@mydomain.com                            (This isn't even a reference)
-	//    References: <ref-1><ref-2><ref-3>                      (Either a pure bug, or they misread the spec)
+	//    1) References: Your message of Friday... <actual-ID>      (Some garbage the programmer thought might be useful)
+	//    2) References: me@mydomain.com                            (This isn't even a reference, it is the sender's email)
+	//    3) References: <ref-1><ref-2><ref-3>                      (Either a pure bug, or they misread the spec)
+	//
+	// Further to this, we also need to filter out the following:
+	//
+	//    4) References: <this message-id>                  (The client author places this email as the first in the
+	//                                                       reference chain)
+	//    5) References: <ref-1><ref-2><ref-1>              A pure bug somewhere in the chain repeats a reference
 	//
 	// The RFC has now been cleaned up to exactly specify this field, but we have to assume there are still
 	// 20 year old email clients out there and cater for them. Especially when we are testing with ancient
 	// public email bodies.
 	//
 	ref := e.email.GetHeader("References")
-	refs := idre.FindAllString(ref, -1)
+
+	// Find all the correctly delimited references, which takes care of 1) and 3)
+	//
+	rawRefs := idre.FindAllString(ref, -1)
+
+	// Find the message Id, so we can take care of 4)
+	//
+	m := e.MessageThreadID()
+
+	// Find the From address, so we can deal with 2). Even though ignoring this would be harmless in that we would just
+	// think it is an email we never saw, it is wrong not to deal with here. We can avoid the clutter in the database
+	// by filtering them out.
+	//
+	fa, _ := e.email.AddressList("From")
+
+	// Make a set, so we can remove duplicates and deal with 5)
+	//
+	set := make(map[string]interface{})
+
+	// This will be our final return set, after de-fucking the references
+	//
+	var refs = make([]string, 0, len(rawRefs))
+
+	// Now we range through the references that the email has given us and make sure that the reference does
+	// not run afoul of 2), 4) or 5)
+	//
+	for _, r := range rawRefs {
+
+		// 2) and 5)
+		//
+		if _, repeated := set[r]; r != m && !repeated {
+
+			set[r] = nil
+
+			// Technically, From: can have more than one sender (back in the day before email lists
+			// got sorted), we will never see this in practice, but, in for a pound, in for a penny
+			//
+			var found bool = false
+			for _, f := range fa {
+				if r == "<"+f.Address+">" {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+
+				// If we got thorough all of those checks, then Phew! Made it!
+				//
+				refs = append(refs, r)
+			}
+		}
+	}
 	return refs
 }
 
