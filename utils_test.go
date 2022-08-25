@@ -38,7 +38,7 @@ func ExampleSort() {
 
 	fmt.Printf("First node subject: %s\n", x.Subject())
 
-	// Output: First node subject: 1970-01-01 00:00:00 +0000 UTC : Re: My source: RE: A biblical digression :: node synthesized by https://gatherstars.com/
+	// Output: First node subject: 2002-02-01 05:44:14 +0000 UTC : Please help a newbie compile mplayer :-)
 }
 
 func ExampleWalk_depth() {
