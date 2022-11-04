@@ -367,12 +367,12 @@ func ExampleThreader_ThreadSlice() {
 	//
 	var nc int
 	Count(sliceRoot, &nc)
-	if nc != 2379 {
-		fmt.Printf("expected %d emails after threading, but got %d back", 2379, nc)
+	if nc != 2387 {
+		fmt.Printf("expected %d emails after threading, but got %d back", 2387, nc)
 	} else {
 		fmt.Printf("There are %d test emails", nc)
 	}
-	// Output: There are 2379 test emails
+	// Output: There are 2387 test emails
 }
 
 func TestThreader_ThreadSlice(t1 *testing.T) {
@@ -392,8 +392,8 @@ func TestThreader_ThreadSlice(t1 *testing.T) {
 	//
 	var nc int
 	Count(sliceRoot, &nc)
-	if nc != 2379 {
-		t1.Errorf("expected %d emails after threading, but got %d back", 2379, nc)
+	if nc != 2387 {
+		t1.Errorf("expected %d emails after threading, but got %d back", 2387, nc)
 	}
 }
 
@@ -417,12 +417,12 @@ func ExampleThreader_ThreadRoot() {
 	//
 	var nc int
 	Count(treeRoot, &nc)
-	if nc != 2379 {
-		fmt.Printf("expected %d emails afer threading, but got %d back", 2379, nc)
+	if nc != 2387 {
+		fmt.Printf("expected %d emails afer threading, but got %d back", 2387, nc)
 	} else {
 		fmt.Printf("There are %d test emails", nc)
 	}
-	// Output: There are 2379 test emails
+	// Output: There are 2387 test emails
 }
 
 func TestThreader_ThreadRoot(t1 *testing.T) {
@@ -445,7 +445,7 @@ func TestThreader_ThreadRoot(t1 *testing.T) {
 	//
 	var nc int
 	Count(treeRoot, &nc)
-	if nc != 2379 {
-		t1.Errorf("expected %d emails after threading, but got %d back", 2379, nc)
+	if nc != 2387 {
+		t1.Errorf("expected %d emails after threading, but got %d back", 2387, nc)
 	}
 }
