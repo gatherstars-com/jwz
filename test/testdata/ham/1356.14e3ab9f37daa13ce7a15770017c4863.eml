@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Mon Oct  7 18:28:12 2002
+From: rpm-list-admin@freshrpms.net  Mon Oct  7 18:28:12 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -74,7 +74,7 @@ Outputting a message in %post and providing a README of some kind would
 be better, as well as perhaps adding a note in %description.
 
 -- 
-\/ille Skyttä
+\/ille Skyttï¿½
 ville.skytta at iki.fi
 
 

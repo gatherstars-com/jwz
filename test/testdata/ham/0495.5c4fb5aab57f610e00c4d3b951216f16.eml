@@ -1,4 +1,4 @@
-From fork-admin@xent.com  Thu Sep  5 11:31:43 2002
+From: fork-admin@xent.com  Thu Sep  5 11:31:43 2002
 Return-Path: <fork-admin@xent.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -74,7 +74,7 @@ bitbitch@magnesium.net writes:
 
 http://www.netli.com/careers/index.htm
 
->* Along with your resume, please answer this question: What does this “C” statement do? #define XY(s, m) (&((s *)0)->m)
+>* Along with your resume, please answer this question: What does this ï¿½Cï¿½ statement do? #define XY(s, m) (&((s *)0)->m)
 
 Besides provide job security?
 

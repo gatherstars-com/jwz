@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Mon Sep  9 18:01:18 2002
+From: rpm-list-admin@freshrpms.net  Mon Sep  9 18:01:18 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -81,11 +81,11 @@ On Mon, Feb 04, 2002 at 02:33:29PM +0200, Peter Peltonen wrote:
 > > I have a local one for the main and upgrades from somewhere plus my own
 > > at $ORKPLACE.
 > 
-> Olen ajatellut pystyttää itselleni lokaalin apt-varaston, kun Suomesta ei 
-> tunnu löytyvän julkista peiliä. Osaisitko avittaa hiukan asiassa, eli 
-> kuinka lähteä liikkeelle? Ensin kannattanee peilata varsinainen RH:n rpm:t 
-> jostain, vaan millä softalla (rsync?) ja mistä (funet?) tuo kannattaa 
-> tehdä, ajatuksia?
+> Olen ajatellut pystyttï¿½ï¿½ itselleni lokaalin apt-varaston, kun Suomesta ei 
+> tunnu lï¿½ytyvï¿½n julkista peiliï¿½. Osaisitko avittaa hiukan asiassa, eli 
+> kuinka lï¿½hteï¿½ liikkeelle? Ensin kannattanee peilata varsinainen RH:n rpm:t 
+> jostain, vaan millï¿½ softalla (rsync?) ja mistï¿½ (funet?) tuo kannattaa 
+> tehdï¿½, ajatuksia?
 > 
 > -- 
 > Peter

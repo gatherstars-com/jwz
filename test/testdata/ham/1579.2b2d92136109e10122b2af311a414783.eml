@@ -3,7 +3,7 @@ Replied: yyyy@example.com (Justin Mason)
 Replied: Daniel Quinlan <quinlan@pathname.com>
 Replied: Matt Sergeant <msergeant@startechgroup.co.uk>
 Replied: Spamassassin-devel <spamassassin-devel@example.sourceforge.net>
-From quinlan@pathname.com  Mon Sep 16 00:08:16 2002
+From: quinlan@pathname.com  Mon Sep 16 00:08:16 2002
 Return-Path: <quinlan@pathname.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
