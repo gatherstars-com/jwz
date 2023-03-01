@@ -1,4 +1,4 @@
-From ilug-admin@linux.ie  Wed Aug 28 10:49:36 2002
+From: ilug-admin@linux.ie  Wed Aug 28 10:49:36 2002
 Return-Path: <ilug-admin@linux.ie>
 Delivered-To: zzzz@localhost.netnoteinc.com
 Received: from localhost (localhost [127.0.0.1])
@@ -61,7 +61,7 @@ xargs -r0 du -b --max-depth 0 |
 sort -k1n |
 grep -v "^0"
 
-Pádraig.
+Pï¿½draig.
 
 
 

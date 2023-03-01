@@ -66,7 +66,7 @@ func ExampleWalk_depth() {
 
 	fmt.Printf("Walker walked %d depth first\n", c)
 
-	// Output: Walker walked 2379 depth first
+	// Output: Walker walked 2387 depth first
 }
 
 func ExampleWalk_breadth() {
@@ -97,7 +97,7 @@ func ExampleWalk_breadth() {
 
 	fmt.Printf("Walker walked %d depth first\n", c)
 
-	// Output: Walker walked 2379 depth first
+	// Output: Walker walked 2387 depth first
 }
 
 type searcher struct {
@@ -168,5 +168,5 @@ func ExampleCount() {
 	var nc int
 	Count(sliceRoot, &nc)
 	fmt.Printf("There are %d test emails", nc)
-	// Output: There are 2379 test emails
+	// Output: There are 2387 test emails
 }

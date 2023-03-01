@@ -284,6 +284,7 @@ func (t *Threader) buildContainer(threadable Threadable) error {
 		if parentRef != nil && // there is a parent
 			ref.parent == nil && // don't have a parent already
 			parentRef != ref && // not a tight loop
+			!ref.findChild(parentRef) && // already linked
 			!parentRef.findChild(ref) { // not a wide loop
 
 			// Ok, link it into the parent's child list.

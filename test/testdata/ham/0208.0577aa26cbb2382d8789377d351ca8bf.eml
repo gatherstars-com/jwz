@@ -1,4 +1,4 @@
-From guterman@mediaunspun.imakenews.net  Tue Oct  8 14:39:42 2002
+From: guterman@mediaunspun.imakenews.net  Tue Oct  8 14:39:42 2002
 Return-Path: <guterman@mediaunspun.imakenews.net>
 Delivered-To: zzzz@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -1810,7 +1810,7 @@ Enter your email address in the box below to receive a free four-week trial of M
 		
 	
 		<input type="checkbox" name="XXDESXXemail_type" value="htm" checked>
-		Send as HTML<br>
+		Sendï¿½asï¿½HTML<br>
 		  
 	  <input type="submit" value="Submit" name="add">&nbsp;
 	

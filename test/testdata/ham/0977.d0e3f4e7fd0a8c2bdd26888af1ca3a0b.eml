@@ -1,4 +1,4 @@
-From fork-admin@xent.com  Tue Oct  8 10:56:42 2002
+From: fork-admin@xent.com  Tue Oct  8 10:56:42 2002
 Return-Path: <fork-admin@xent.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -50,7 +50,7 @@ X-Spam-Status: No, hits=-5.2 required=5.0
 X-Spam-Level: 
 
 Why am I so passionate about decentralization? Because I believe some of 
-today’s most profound problems with networked applications are caused by 
+todayï¿½s most profound problems with networked applications are caused by 
 centralization.
 
 Generically, a centralized political or economic system permits only one 
@@ -60,7 +60,7 @@ context of software, centralized variables can only contain one valid
 value at a time. That limits us to only representing information A) 
 according to the beliefs of a single agency, and B) that changes more 
 slowly than it takes to propagate. Nevertheless, centralization is the 
-basis for today’s most popular architectural style for developing 
+basis for todayï¿½s most popular architectural style for developing 
 network applications: client-server interaction using request-response 
 communication protocols.
 

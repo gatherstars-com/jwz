@@ -1,4 +1,4 @@
-From exmh-workers-admin@redhat.com  Wed Sep 11 21:29:20 2002
+From: exmh-workers-admin@redhat.com  Wed Sep 11 21:29:20 2002
 Return-Path: <exmh-workers-admin@example.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -30,7 +30,7 @@ Received: from qiclab.scn.rain.com (postfix@qiclab.scn.rain.com
     -0400
 Received: by qiclab.scn.rain.com (Postfix, from userid 177) id 4C64224E158;
     Wed, 11 Sep 2002 12:56:36 -0700 (PDT)
->Received: by joseph.doink.com (Postfix, from userid 11334) id 92D352FEAB;
+Received: by joseph.doink.com (Postfix, from userid 11334) id 92D352FEAB;
     Wed, 11 Sep 2002 12:53:12 -0700 (PDT)
 Received: from dOink.COM (localhost [127.0.0.1]) by joseph.doink.com
     (Postfix) with ESMTP id 6EB8F4BDC3; Wed, 11 Sep 2002 12:53:12 -0700 (PDT)

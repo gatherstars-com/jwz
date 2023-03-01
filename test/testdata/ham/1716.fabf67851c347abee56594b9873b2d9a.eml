@@ -1,4 +1,4 @@
-From razor-users-admin@lists.sourceforge.net  Wed Oct  9 18:17:46 2002
+From: razor-users-admin@lists.sourceforge.net  Wed Oct  9 18:17:46 2002
 Return-Path: <razor-users-admin@example.sourceforge.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -85,12 +85,12 @@ On Wed, 9 Oct 2002 09:15:03 -0400 (EDT), Samuel Checker <sc@pffcu.org> wrote:
     Are you using Spamassassin on the input side?  I've just changed my sendmail installation and am looking for the 'proper' way to pass it through there, systemwide, before accepting it and sending it to the users.  It's kinda problematic to set up procmail scripts for every user, when the user's home directories are NFS mounted....and the source is on my own machine, on which I try new things. (And it's the only machine with the drivespace...)
   
 ------------------------------------------------------------------------
-Brian Fahrländer              Linux Zealot, Conservative, and Technomad
+Brian Fahrlï¿½nder              Linux Zealot, Conservative, and Technomad
 Evansville, IN                    My Voyage: http://www.CounterMoon.com
 ICQ  5119262
 ------------------------------------------------------------------------
-angegangen, Schlange-Hüften, sein es ganz rüber jetzt. Bügel innen fest,
-weil es eine lange, süsse Fahrt ist. 
+angegangen, Schlange-Hï¿½ften, sein es ganz rï¿½ber jetzt. Bï¿½gel innen fest,
+weil es eine lange, sï¿½sse Fahrt ist. 
 
 
 -------------------------------------------------------

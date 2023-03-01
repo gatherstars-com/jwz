@@ -1,4 +1,4 @@
-From fork-admin@xent.com  Mon Sep 23 12:09:42 2002
+From: fork-admin@xent.com  Mon Sep 23 12:09:42 2002
 Return-Path: <fork-admin@xent.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -20,7 +20,7 @@ Received: by argote.ch (Postfix, from userid 500) id 0A6ABC44D;
     Mon, 23 Sep 2002 11:06:05 +0200 (CEST)
 To: fork@example.com
 Subject: Re: Goodbye Global Warming
-Cc: ""@argote.ch
+Cc: someone@argote.ch
 Message-Id: <20020923090605.0A6ABC44D@argote.ch>
 From: harley@argote.ch (Robert Harley)
 Sender: fork-admin@xent.com

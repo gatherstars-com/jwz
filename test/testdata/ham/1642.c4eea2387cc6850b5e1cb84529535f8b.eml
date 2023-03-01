@@ -1,4 +1,4 @@
-From spamassassin-devel-admin@lists.sourceforge.net  Thu Aug 22 15:46:30 2002
+From: spamassassin-devel-admin@lists.sourceforge.net  Thu Aug 22 15:46:30 2002
 Return-Path: <spamassassin-devel-admin@example.sourceforge.net>
 Delivered-To: yyyy@localhost.netnoteinc.com
 Received: from localhost (localhost [127.0.0.1])
@@ -58,7 +58,7 @@ X-Spam-Status: No, hits=-5.4 required=7.0
 	version=2.40-cvs
 X-Spam-Level: 
 
-David Höhn wrote:
+David Hï¿½hn wrote:
 > Hello, have you seen and discussed this article and his approach?
 > 
 > Thank you

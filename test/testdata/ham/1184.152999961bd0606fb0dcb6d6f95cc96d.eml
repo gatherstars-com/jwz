@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Mon Sep  9 18:04:38 2002
+From: rpm-list-admin@freshrpms.net  Mon Sep  9 18:04:38 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -84,7 +84,7 @@ would match *all* those packages.
 
 -- 
 "You were good with that recorder." (=nokkahuilu)
-"Soitit hyvin sitä mankkaa."
+"Soitit hyvin sitï¿½ mankkaa."
 	-- (Suomennos) Men Behaving Badly
 
 _______________________________________________

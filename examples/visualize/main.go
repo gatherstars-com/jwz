@@ -6,6 +6,7 @@ import (
 	"github.com/gatherstars-com/jwz"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	"io/ioutil"
 	"log"
 	"os"
 	"sort"
@@ -51,7 +52,6 @@ func main() {
 //
 // Also, The colors will sometimes look wonky on a custom configuration of OSX console. Try a standard one and
 // make sure your TERM and terminfo database are good if you have issues.
-//
 func visualize(threads jwz.Threadable) {
 
 	root := tview.NewTreeNode("Threads").
@@ -82,7 +82,14 @@ func visualize(threads jwz.Threadable) {
 			if thr.dummy {
 				sideBar.SetText("Placeholders manufactured by the Threader don't contain email text")
 			} else {
-				sideBar.SetText(thr.email.Text)
+				if thr.email.HTML != "" {
+					sideBar.SetText(thr.email.HTML)
+					ioutil.WriteFile(thr.MessageThreadID()+".html", []byte(thr.email.HTML), 0666)
+					ioutil.WriteFile(thr.MessageThreadID()+".txt", []byte(thr.email.Text), 0666)
+
+				} else {
+					sideBar.SetText(thr.email.Text)
+				}
 				sideBar.ScrollToBeginning()
 				headers.Clear()
 
@@ -133,7 +140,6 @@ func visualize(threads jwz.Threadable) {
 
 // buildVisual creates a visual node for the given treeNode and makes it a child of the
 // given target node.
-//
 func buildVisual(target *tview.TreeNode, treeNode jwz.Threadable) {
 
 	if treeNode == nil {
@@ -184,7 +190,6 @@ func buildVisual(target *tview.TreeNode, treeNode jwz.Threadable) {
 }
 
 // colorMe decides what color a visualized node should be, based on whether it has child and/or next
-//
 func colorMe(n *tview.TreeNode, treeNode jwz.Threadable) {
 
 	hasNext := treeNode.GetNext() != nil

@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Mon Sep 30 21:44:23 2002
+From: rpm-list-admin@freshrpms.net  Mon Sep 30 21:44:23 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -59,9 +59,9 @@ Hi.
 Are there any reasons _not_ to use the new apt releases on RH 7.x?
 
 -- 
-reiserfsck ist bekannt dafür, daß es leere Dateisysteme zurückläßt.
+reiserfsck ist bekannt dafï¿½r, daï¿½ es leere Dateisysteme zurï¿½cklï¿½ï¿½t.
 Gut, formaljuristisch hat er das Dateisystem in einen wohldefinierten
-Zustand versetzt, aber ... nunja.  Man erwartet schon irgendwie, daß
+Zustand versetzt, aber ... nunja.  Man erwartet schon irgendwie, daï¿½
 noch ein paar Daten drauf sind danach.      -- Felix v. Leitner, dasr
 
 _______________________________________________

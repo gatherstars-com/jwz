@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Thu Oct 10 12:32:38 2002
+From: rpm-list-admin@freshrpms.net  Thu Oct 10 12:32:38 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -63,7 +63,7 @@ X-Spam-Status: No, hits=-25.7 required=5.0
 	version=2.50-cvs
 X-Spam-Level: 
 
-Once upon a time, Michèl wrote :
+Once upon a time, Michï¿½l wrote :
 
 > Has anyone made a working source RPM for dvd::rip for Red Hat 8.0?
 

@@ -1,4 +1,4 @@
-From rpm-list-admin@freshrpms.net  Sat Oct  5 10:37:15 2002
+From: rpm-list-admin@freshrpms.net  Sat Oct  5 10:37:15 2002
 Return-Path: <rpm-zzzlist-admin@freshrpms.net>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -76,7 +76,7 @@ On 04 Oct 2002 22:25:31 -0400, QuaffA Pint <quaffapint@clippersoft.net> wrote:
     "apt-get install xine".  It'll find all these.  Oh, and I'm told that Redhat 8.0 will also suggest things like this for ya. (Not apt, but the actual package names you need)
 
 ------------------------------------------------------------------------
-Brian Fahrländer              Linux Zealot, Conservative, and Technomad
+Brian Fahrlï¿½nder              Linux Zealot, Conservative, and Technomad
 Evansville, IN                    My Voyage: http://www.CounterMoon.com
 ICQ  5119262
 ------------------------------------------------------------------------

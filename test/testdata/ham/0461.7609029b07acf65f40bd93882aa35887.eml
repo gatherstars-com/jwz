@@ -1,4 +1,4 @@
-From fork-admin@xent.com  Tue Sep  3 14:24:41 2002
+From: fork-admin@xent.com  Tue Sep  3 14:24:41 2002
 Return-Path: <fork-admin@xent.com>
 Delivered-To: yyyy@localhost.example.com
 Received: from localhost (jalapeno [127.0.0.1])
@@ -110,7 +110,7 @@ Because mesh networks use Wi-Fi, the equipment and infrastructure needed
 to create them is cheap and readily available. Instead of building 
 cellular phone towers that often cost hundreds of thousands of pounds, all 
 that is needed to get a network going are wireless access points (around 
-£100 now) placed strategically around town to relay traffic, and the 
+ï¿½100 now) placed strategically around town to relay traffic, and the 
 proper software. Existing laptops and PDAs can be mesh-enabled by 
 software.
 
